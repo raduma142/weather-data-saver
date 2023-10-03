@@ -94,7 +94,7 @@
         </Grid>
 
         <!-- Таблица добавленных записей -->
-        <DataGrid>
+        <DataGrid ItemsSource="{Binding Path=dataSet}" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Температура, ℃" Width="1*"/>
                 <DataGridTextColumn Header="Условия" Width="1*"/>

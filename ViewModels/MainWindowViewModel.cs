@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Timers;
+using WeatherDataSaver.Models;
 using WeatherDataSaver.ViewModels.Base;
 
 namespace WeatherDataSaver.ViewModels
@@ -7,6 +9,9 @@ namespace WeatherDataSaver.ViewModels
     class MainWindowViewModel : ViewModel
     {
         #region Properties
+
+        //DataSet
+        public ObservableCollection<DataRecord> dataSet {  get; set; } = new ObservableCollection<DataRecord>();
 
         //Temperature
         private float _temperature = 0f;
