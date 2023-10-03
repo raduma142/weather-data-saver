@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Timers;
 using WeatherDataSaver.ViewModels.Base;
 
 namespace WeatherDataSaver.ViewModels
@@ -47,5 +48,23 @@ namespace WeatherDataSaver.ViewModels
             set => Set(ref _time, value);
         }
         #endregion
+
+        #region Timer
+        public System.Timers.Timer updatingDateTimeTimer = new System.Timers.Timer()
+        {
+            Interval = 1000,
+            AutoReset = true,
+            Enabled = true,
+        };
+        #endregion
+
+        public MainWindowViewModel()
+        {
+            updatingDateTimeTimer.Elapsed += (object source, ElapsedEventArgs e) =>
+            {
+                date = DateTime.Now.ToString("d");
+                time = DateTime.Now.ToString("HH:mm:ss");
+            };
+        }
     }
 }
