@@ -12,6 +12,7 @@ namespace WeatherDataSaver
             AppHost = Host.CreateDefaultBuilder().ConfigureServices((hostContext, services) =>
             {
                 services.AddSingleton<MainWindow>();
+                services.AddLogging();
             }).Build();
         }
         protected override async void OnStartup(StartupEventArgs e)
