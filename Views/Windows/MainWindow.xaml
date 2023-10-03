@@ -87,7 +87,7 @@
                 <StackPanel>
                     <Button>Сохранить</Button>
                     <TextBlock>Путь к базе данных:</TextBlock>
-                    <TextBox IsReadOnly="True"></TextBox>
+                    <TextBox IsReadOnly="True" Text="{Binding Path=report}"/>
                     <Button>Открыть в проводнике</Button>
                 </StackPanel>
             </GroupBox>

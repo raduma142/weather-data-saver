@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
+using WeatherDataSaver.Services.ReportService;
+using WeatherDataSaver.ViewModels;
 
 namespace WeatherDataSaver
 {
@@ -12,6 +14,8 @@ namespace WeatherDataSaver
             AppHost = Host.CreateDefaultBuilder().ConfigureServices((hostContext, services) =>
             {
                 services.AddSingleton<MainWindow>();
+                services.AddSingleton<MainWindowViewModel>();
+                services.AddTransient<IReportCreater, ReportCreater>();
                 services.AddLogging();
             }).Build();
         }

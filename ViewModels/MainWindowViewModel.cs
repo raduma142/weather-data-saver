@@ -6,6 +6,7 @@ using System.Timers;
 using System.Windows.Input;
 using WeatherDataSaver.Infrascructure.Commands;
 using WeatherDataSaver.Models;
+using WeatherDataSaver.Services.ReportService;
 using WeatherDataSaver.ViewModels.Base;
 
 namespace WeatherDataSaver.ViewModels
@@ -56,6 +57,14 @@ namespace WeatherDataSaver.ViewModels
             get => _time;
             set => Set(ref _time, value);
         }
+
+        //Report
+        private string _report = "Отчёт ещё не сформирован.";
+        public string report
+        {
+            get => _report;
+            set => Set(ref _report, value);
+        }
         #endregion
 
         #region Timer
@@ -67,7 +76,12 @@ namespace WeatherDataSaver.ViewModels
         };
         #endregion
 
+        #region Dependences
+        public IReportCreater _reportCreater { get; }
+        #endregion
+
         #region Commands
+        //Добавить запись в таблицу
         public ICommand appendRecord { get; }
         private void onAppendCommand(object o)
         {
@@ -82,9 +96,17 @@ namespace WeatherDataSaver.ViewModels
 
             dataSet.Add(record);
         }
+
+        //Сформировать отчёт
+        public ICommand formReport { get; }
+
+        private void onFormReport(object o)
+        {
+            report = _reportCreater.CreateReport(dataSet);
+        }
         #endregion
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(ILogger<MainWindowViewModel> logger)
         {
             appendRecord = new ActionCommand(onAppendCommand);
 
