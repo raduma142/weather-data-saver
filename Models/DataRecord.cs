@@ -1,6 +1,6 @@
 ﻿namespace WeatherDataSaver.Models
 {
-    class DataRecord
+    public class DataRecord
     {
         public float temperature { get; set; } = 0f;
         public string condition { get; set; } = string.Empty;

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Timers;
+using System.Windows.Input;
+using WeatherDataSaver.Infrascructure.Commands;
 using WeatherDataSaver.Models;
 using WeatherDataSaver.ViewModels.Base;
 
@@ -63,8 +65,27 @@ namespace WeatherDataSaver.ViewModels
         };
         #endregion
 
+        #region Commands
+        public ICommand appendRecord { get; }
+        private void onAppendCommand(object o)
+        {
+            DataRecord record = new DataRecord()
+            {
+                temperature = temperature,
+                condition = condition,
+                note = note,
+                date = date,
+                time = time,
+            };
+
+            dataSet.Add(record);
+        }
+        #endregion
+
         public MainWindowViewModel()
         {
+            appendRecord = new ActionCommand(onAppendCommand);
+
             updatingDateTimeTimer.Elapsed += (object source, ElapsedEventArgs e) =>
             {
                 date = DateTime.Now.ToString("d");

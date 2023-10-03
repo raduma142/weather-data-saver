@@ -53,7 +53,7 @@
                 <TextBox IsReadOnly="True" Text="{Binding Path=date}"/>
                 <TextBlock>Время</TextBlock>
                 <TextBox IsReadOnly="True" Text="{Binding Path=time}"/>
-                <Button>Добавить</Button>
+                <Button Command="{Binding Path=appendRecord}">Добавить</Button>
             </StackPanel>
 
         </Grid>
@@ -97,11 +97,11 @@
         <DataGrid ItemsSource="{Binding Path=dataSet}" IsReadOnly="True"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Температура, ℃" Width="1*"/>
-                <DataGridTextColumn Header="Условия" Width="1*"/>
-                <DataGridTextColumn Header="Зметка" Width="2*"/>
-                <DataGridTextColumn Header="Дата" Width="1*"/>
-                <DataGridTextColumn Header="Время" Width="1*"/>
+                <DataGridTextColumn Header="Температура, ℃" Width="1*" Binding="{Binding Path=temperature}"/>
+                <DataGridTextColumn Header="Условия" Width="1*" Binding="{Binding Path=condition}"/>
+                <DataGridTextColumn Header="Заметка" Width="2*" Binding="{Binding Path=note}"/>
+                <DataGridTextColumn Header="Дата" Width="1*" Binding="{Binding Path=date}"/>
+                <DataGridTextColumn Header="Время" Width="1*" Binding="{Binding Path=time}"/>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
