@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Infrascructure\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
