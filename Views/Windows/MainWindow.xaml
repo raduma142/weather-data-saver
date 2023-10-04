@@ -13,89 +13,65 @@
     </Window.DataContext>
 
     <Window.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="Padding" Value="5"/>
+        </Style>
         <Style TargetType="StackPanel">
-            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="Button" >
+            <Setter Property="Padding" Value="5"/>
         </Style>
     </Window.Resources>
 
-    <DockPanel>
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
         <!-- Область ввода данных -->
-        <Grid DockPanel.Dock="Top">
+        <GroupBox Grid.Row="0" Header="Добавление записи">
+            <DockPanel>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-
-            <StackPanel Grid.Column="0">
-                <TextBlock>Температура, ℃</TextBlock>
-                <TextBox Text="{Binding Path=temperature}"/>
-                <TextBlock>Условия</TextBlock>
-                <ComboBox SelectedIndex="0" SelectedValuePath="{Binding Path=condition}">
-                    <ComboBoxItem >Ясно</ComboBoxItem>
-                    <ComboBoxItem>Облачно</ComboBoxItem>
-                    <ComboBoxItem>Туман</ComboBoxItem>
-                    <ComboBoxItem>Дождь</ComboBoxItem>
-                    <ComboBoxItem>Снег</ComboBoxItem>
-                    <ComboBoxItem>Град</ComboBoxItem>
-                </ComboBox>
-            </StackPanel>
-
-            <StackPanel Grid.Column="1">
-                <TextBlock>Заметка</TextBlock>
-                <TextBox AcceptsReturn="True" Height="80" Text="{Binding Path=note}"/>
-            </StackPanel>
-
-            <StackPanel Grid.Column="2">
-                <TextBlock>Дата</TextBlock>
-                <TextBox IsReadOnly="True" Text="{Binding Path=date}"/>
-                <TextBlock>Время</TextBlock>
-                <TextBox IsReadOnly="True" Text="{Binding Path=time}"/>
-                <Button Command="{Binding Path=appendRecord}">Добавить</Button>
-            </StackPanel>
-
-        </Grid>
-
-        <!-- Варианты сохранения таблицы -->
-        <Grid DockPanel.Dock="Bottom">
-            
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-
-            <GroupBox Grid.Column="0" Header="Сохранение в файл">
-                <StackPanel>
-                    <Button>Сохранить</Button>
-                    <TextBlock>Путь к файлу:</TextBlock>
-                    <TextBox IsReadOnly="True"></TextBox>
-                    <Button>Открыть в проводнике</Button>
+                <StackPanel DockPanel.Dock="Left">
+                    <TextBlock>Температура, ℃</TextBlock>
+                    <TextBox Text="{Binding Path=temperature}"/>
+                    <TextBlock>Условия</TextBlock>
+                    <ComboBox SelectedIndex="0" SelectedValuePath="{Binding Path=condition}">
+                        <ComboBoxItem >Ясно</ComboBoxItem>
+                        <ComboBoxItem>Облачно</ComboBoxItem>
+                        <ComboBoxItem>Туман</ComboBoxItem>
+                        <ComboBoxItem>Дождь</ComboBoxItem>
+                        <ComboBoxItem>Снег</ComboBoxItem>
+                        <ComboBoxItem>Град</ComboBoxItem>
+                    </ComboBox>
                 </StackPanel>
-            </GroupBox>
 
-            <GroupBox Grid.Column="1" Header="Отчёт">
-                <StackPanel>
-                    <Button Command="{Binding Path=createReport}">Сформировать</Button>
-                    <TextBox IsReadOnly="True" Height="60"
-                             Text="{Binding Path=report}"/>
+                <StackPanel DockPanel.Dock="Right">
+                    <TextBlock>Дата</TextBlock>
+                    <TextBox IsReadOnly="True" Text="{Binding Path=date}"/>
+                    <TextBlock>Время</TextBlock>
+                    <TextBox IsReadOnly="True" Text="{Binding Path=time}"/>
+                    <Button Command="{Binding Path=appendRecord}">➕ Добавить</Button>
                 </StackPanel>
-            </GroupBox>
 
-            <GroupBox Grid.Column="2" Header="Сохранение в базу данных">
-                <StackPanel>
-                    <Button>Сохранить</Button>
-                    <TextBlock>Путь к базе данных:</TextBlock>
-                    <TextBox IsReadOnly="True"/>
-                    <Button>Открыть в проводнике</Button>
-                </StackPanel>
-            </GroupBox>
-        </Grid>
+                <DockPanel Grid.Column="1">
+                    <TextBlock DockPanel.Dock="Top">Заметка</TextBlock>
+                    <TextBox AcceptsReturn="True" Text="{Binding Path=note}"/>
+                </DockPanel>
+
+            </DockPanel>
+        </GroupBox>
+
+        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Height="5"/>
 
         <!-- Таблица добавленных записей -->
-        <DataGrid ItemsSource="{Binding Path=dataSet}" IsReadOnly="True"
+        <DataGrid Grid.Row="2" ItemsSource="{Binding Path=dataSet}" IsReadOnly="True"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Температура, ℃" Width="1*" Binding="{Binding Path=temperature}"/>
@@ -105,5 +81,38 @@
                 <DataGridTextColumn Header="Время" Width="1*" Binding="{Binding Path=time}"/>
             </DataGrid.Columns>
         </DataGrid>
-    </DockPanel>
+
+        <GridSplitter Grid.Row="3" HorizontalAlignment="Stretch" Height="5"/>
+
+        <!-- Варианты сохранения таблицы -->
+        <DockPanel Grid.Row="4">
+
+            <GroupBox DockPanel.Dock="Left" Header="Сохранение в файл">
+                <StackPanel>
+                    <Button>💾 Сохранить</Button>
+                    <TextBlock>Путь к файлу:</TextBlock>
+                    <TextBox IsReadOnly="True"></TextBox>
+                    <Button>📂 Открыть в проводнике</Button>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox DockPanel.Dock="Right" Header="Сохранение в базу данных">
+                <StackPanel>
+                    <Button>💾 Сохранить</Button>
+                    <TextBlock>Путь к базе данных:</TextBlock>
+                    <TextBox IsReadOnly="True"/>
+                    <Button>📂 Открыть в проводнике</Button>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Отчёт">
+                <DockPanel>
+                    <Button DockPanel.Dock="Top" Command="{Binding Path=createReport}">📄 Сформировать</Button>
+                    <TextBox IsReadOnly="True" Text="{Binding Path=report}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+                </DockPanel>
+            </GroupBox>
+        </DockPanel>
+
+    </Grid>
+        
 </Window>
