@@ -76,10 +76,6 @@ namespace WeatherDataSaver.ViewModels
         };
         #endregion
 
-        #region Dependences
-        public IReportCreater _reportCreater { get; }
-        #endregion
-
         #region Commands
         //Добавить запись в таблицу
         public ICommand appendRecord { get; }
@@ -102,11 +98,10 @@ namespace WeatherDataSaver.ViewModels
 
         private void onFormReport(object o)
         {
-            report = _reportCreater.CreateReport(dataSet);
         }
         #endregion
 
-        public MainWindowViewModel(ILogger<MainWindowViewModel> logger)
+        public MainWindowViewModel()
         {
             appendRecord = new ActionCommand(onAppendCommand);
 
