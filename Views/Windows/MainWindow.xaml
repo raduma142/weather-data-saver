@@ -31,7 +31,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="200"/>
         </Grid.RowDefinitions>
 
         <!-- Область ввода данных -->
@@ -95,8 +95,9 @@
                 <DockPanel>
                     <Button DockPanel.Dock="Top" Command="{Binding Path=saveReportToFile}">💾 Сохранить</Button>
                     <TextBlock DockPanel.Dock="Top">Путь к файлу:</TextBlock>
-                    <Button DockPanel.Dock="Bottom">📂 Открыть в проводнике</Button>
-                    <TextBox IsReadOnly="True" TextWrapping="WrapWithOverflow" Text="{Binding Path=csvPath}"/>
+                    <Button DockPanel.Dock="Bottom" Command="{Binding openFilesFolder}">📂 Открыть в проводнике</Button>
+                    <TextBox IsReadOnly="True" TextWrapping="WrapWithOverflow" Text="{Binding Path=csvPath}"
+                             VerticalScrollBarVisibility="Auto"/>
                 </DockPanel>
             </GroupBox>
 
@@ -104,8 +105,9 @@
                 <DockPanel>
                     <Button DockPanel.Dock="Top" Command="{Binding Path=saveReportToFile}">💾 Сохранить</Button>
                     <TextBlock DockPanel.Dock="Top">Путь к файлу:</TextBlock>
-                    <Button DockPanel.Dock="Bottom">📂 Открыть в проводнике</Button>
-                    <TextBox IsReadOnly="True" TextWrapping="WrapWithOverflow" Text="{Binding Path=csvPath}"/>
+                    <Button DockPanel.Dock="Bottom" Command="{Binding openFilesFolder}">📂 Открыть в проводнике</Button>
+                    <TextBox IsReadOnly="True" TextWrapping="WrapWithOverflow" Text="{Binding Path=csvPath}"
+                             VerticalScrollBarVisibility="Auto"/>
                 </DockPanel>
             </GroupBox>
 

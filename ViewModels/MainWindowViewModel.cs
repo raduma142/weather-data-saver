@@ -147,6 +147,13 @@ namespace WeatherDataSaver.ViewModels
         {
             csvPath = fileAccess.SaveDataSet(dataSet);
         }
+
+        //Открыть папку с файлами
+        public ICommand openFilesFolder { get; }
+        private void onOpenFilesFolder(object o)
+        {
+            fileAccess.OpenFilesFolder();
+        }
         #endregion
 
         public MainWindowViewModel()
@@ -154,6 +161,7 @@ namespace WeatherDataSaver.ViewModels
             appendRecord = new ActionCommand(onAppendCommand);
             createReport = new ActionCommand(onCreateReport);
             saveReportToFile = new ActionCommand(onSaveReportToFile, canSaveReportToFile);
+            openFilesFolder = new ActionCommand(onOpenFilesFolder);
 
             updatingDateTimeTimer.Elapsed += (object source, ElapsedEventArgs e) =>
             {
