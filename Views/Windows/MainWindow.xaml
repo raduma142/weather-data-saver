@@ -16,11 +16,11 @@
         <Style TargetType="GroupBox">
             <Setter Property="Padding" Value="5"/>
         </Style>
-        <Style TargetType="StackPanel">
-            <Setter Property="Margin" Value="5"/>
-        </Style>
-        <Style TargetType="Button" >
+        <Style TargetType="Button">
             <Setter Property="Padding" Value="5"/>
+        </Style>
+        <Style TargetType="DockPanel">
+            <Setter Property="Margin" Value="5"/>
         </Style>
     </Window.Resources>
 
@@ -38,20 +38,22 @@
         <GroupBox Grid.Row="0" Header="Добавление записи">
             <DockPanel>
 
-                <StackPanel DockPanel.Dock="Left">
+                <StackPanel DockPanel.Dock="Left" Width="150">
                     <TextBlock>Температура, ℃</TextBlock>
                     <TextBox Text="{Binding Path=temperature}"/>
                     <TextBlock>Условия</TextBlock>
                     <ComboBox SelectedIndex="{Binding Path=condition_index}" ItemsSource="{Binding Path=conditions}"/>
                 </StackPanel>
 
-                <StackPanel DockPanel.Dock="Right">
-                    <TextBlock>Дата</TextBlock>
-                    <TextBox IsReadOnly="True" Text="{Binding Path=date}"/>
-                    <TextBlock>Время</TextBlock>
-                    <TextBox IsReadOnly="True" Text="{Binding Path=time}"/>
-                    <Button Command="{Binding Path=appendRecord}">➕ Добавить</Button>
-                </StackPanel>
+                <DockPanel DockPanel.Dock="Right" Width="150">
+                    <Button DockPanel.Dock="Bottom" Command="{Binding Path=appendRecord}">➕ Добавить</Button>
+                    <StackPanel>
+                        <TextBlock>Дата</TextBlock>
+                        <TextBox IsReadOnly="True" Text="{Binding Path=date}"/>
+                        <TextBlock>Время</TextBlock>
+                        <TextBox IsReadOnly="True" Text="{Binding Path=time}"/>
+                    </StackPanel>
+                </DockPanel>
 
                 <DockPanel Grid.Column="1">
                     <TextBlock DockPanel.Dock="Top">Заметка</TextBlock>
@@ -80,22 +82,22 @@
         <!-- Варианты сохранения таблицы -->
         <DockPanel Grid.Row="4">
 
-            <GroupBox DockPanel.Dock="Left" Header="Сохранение в файл">
-                <StackPanel>
-                    <Button Command="{Binding Path=saveReportToFile}">💾 Сохранить</Button>
-                    <TextBlock>Путь к файлу:</TextBlock>
-                    <TextBox IsReadOnly="True" Text="{Binding Path=csvPath}"/>
-                    <Button>📂 Открыть в проводнике</Button>
-                </StackPanel>
+            <GroupBox DockPanel.Dock="Left" Header="Сохранение в файл" Width="200">
+                <DockPanel>
+                    <Button DockPanel.Dock="Top" Command="{Binding Path=saveReportToFile}">💾 Сохранить</Button>
+                    <TextBlock DockPanel.Dock="Top">Путь к файлу:</TextBlock>
+                    <Button DockPanel.Dock="Bottom">📂 Открыть в проводнике</Button>
+                    <TextBox IsReadOnly="True" TextWrapping="WrapWithOverflow" Text="{Binding Path=csvPath}"/>
+                </DockPanel>
             </GroupBox>
 
-            <GroupBox DockPanel.Dock="Right" Header="Сохранение в базу данных">
-                <StackPanel>
-                    <Button Command="{Binding saveReportToFile}">💾 Сохранить</Button>
-                    <TextBlock>Путь к базе данных:</TextBlock>
-                    <TextBox IsReadOnly="True" Text="{Binding Path=csvPath}"/>
-                    <Button>📂 Открыть в проводнике</Button>
-                </StackPanel>
+            <GroupBox DockPanel.Dock="Right" Header="Сохранение в базу данных" Width="200">
+                <DockPanel>
+                    <Button DockPanel.Dock="Top" Command="{Binding Path=saveReportToFile}">💾 Сохранить</Button>
+                    <TextBlock DockPanel.Dock="Top">Путь к файлу:</TextBlock>
+                    <Button DockPanel.Dock="Bottom">📂 Открыть в проводнике</Button>
+                    <TextBox IsReadOnly="True" TextWrapping="WrapWithOverflow" Text="{Binding Path=csvPath}"/>
+                </DockPanel>
             </GroupBox>
 
             <GroupBox Header="Отчёт">
