@@ -13,9 +13,10 @@ namespace WeatherDataSaver.Services.ReportService
 
             foreach(var record in dataSet)
             {
-                report += $"{record.date} в {record.time}\n";
-                report += $"На улице {record.condition}, значние температуры равно {record.temperature}℃.\n{record.note}\n\n";
+                report += record.toReportSctring();
             }
+
+            _logger.LogInformation("Сгенерирован отчёт");
 
             return report;
         }

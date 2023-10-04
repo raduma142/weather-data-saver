@@ -42,14 +42,7 @@
                     <TextBlock>Температура, ℃</TextBlock>
                     <TextBox Text="{Binding Path=temperature}"/>
                     <TextBlock>Условия</TextBlock>
-                    <ComboBox SelectedIndex="0" SelectedValuePath="{Binding Path=condition}">
-                        <ComboBoxItem >Ясно</ComboBoxItem>
-                        <ComboBoxItem>Облачно</ComboBoxItem>
-                        <ComboBoxItem>Туман</ComboBoxItem>
-                        <ComboBoxItem>Дождь</ComboBoxItem>
-                        <ComboBoxItem>Снег</ComboBoxItem>
-                        <ComboBoxItem>Град</ComboBoxItem>
-                    </ComboBox>
+                    <ComboBox SelectedIndex="{Binding Path=condition_index}" ItemsSource="{Binding Path=conditions}"/>
                 </StackPanel>
 
                 <StackPanel DockPanel.Dock="Right">
@@ -89,18 +82,18 @@
 
             <GroupBox DockPanel.Dock="Left" Header="Сохранение в файл">
                 <StackPanel>
-                    <Button>💾 Сохранить</Button>
+                    <Button Command="{Binding Path=saveReportToFile}">💾 Сохранить</Button>
                     <TextBlock>Путь к файлу:</TextBlock>
-                    <TextBox IsReadOnly="True"></TextBox>
+                    <TextBox IsReadOnly="True" Text="{Binding Path=csvPath}"/>
                     <Button>📂 Открыть в проводнике</Button>
                 </StackPanel>
             </GroupBox>
 
             <GroupBox DockPanel.Dock="Right" Header="Сохранение в базу данных">
                 <StackPanel>
-                    <Button>💾 Сохранить</Button>
+                    <Button Command="{Binding saveReportToFile}">💾 Сохранить</Button>
                     <TextBlock>Путь к базе данных:</TextBlock>
-                    <TextBox IsReadOnly="True"/>
+                    <TextBox IsReadOnly="True" Text="{Binding Path=csvPath}"/>
                     <Button>📂 Открыть в проводнике</Button>
                 </StackPanel>
             </GroupBox>

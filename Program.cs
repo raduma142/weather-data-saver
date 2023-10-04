@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using WeatherDataSaver.Services.ReportService;
 using WeatherDataSaver.ViewModels;
+using WeatherDataSaver.Services.FileService;
 
 namespace WeatherDataSaver
 {
@@ -19,6 +20,7 @@ namespace WeatherDataSaver
                     services.AddSingleton<App>();
                     services.AddSingleton<MainWindow>();
                     services.AddSingleton<MainWindowViewModel>();
+                    services.AddTransient<IFileAccess, FileAccess>();
                     services.AddTransient<IReportCreater, ReportCreater>();
                     services.AddLogging();
                 }).Build();
