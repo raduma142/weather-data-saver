@@ -78,8 +78,9 @@
 
             <GroupBox Grid.Column="1" Header="Отчёт">
                 <StackPanel>
-                    <Button>Сформировать</Button>
-                    <TextBox IsReadOnly="True" Height="60"></TextBox>
+                    <Button Command="{Binding Path=createReport}">Сформировать</Button>
+                    <TextBox IsReadOnly="True" Height="60"
+                             Text="{Binding Path=report}"/>
                 </StackPanel>
             </GroupBox>
 
@@ -87,7 +88,7 @@
                 <StackPanel>
                     <Button>Сохранить</Button>
                     <TextBlock>Путь к базе данных:</TextBlock>
-                    <TextBox IsReadOnly="True" Text="{Binding Path=report}"/>
+                    <TextBox IsReadOnly="True"/>
                     <Button>Открыть в проводнике</Button>
                 </StackPanel>
             </GroupBox>

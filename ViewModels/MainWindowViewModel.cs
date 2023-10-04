@@ -13,6 +13,10 @@ namespace WeatherDataSaver.ViewModels
 {
     class MainWindowViewModel : ViewModel
     {
+        #region Services
+        public IReportCreater reportCreater;
+        #endregion
+
         #region Properties
 
         //DataSet
@@ -94,16 +98,18 @@ namespace WeatherDataSaver.ViewModels
         }
 
         //Сформировать отчёт
-        public ICommand formReport { get; }
+        public ICommand createReport { get; }
 
-        private void onFormReport(object o)
+        private void onCreateReport(object o)
         {
+            report = reportCreater.CreateReport(dataSet);
         }
         #endregion
 
         public MainWindowViewModel()
         {
             appendRecord = new ActionCommand(onAppendCommand);
+            createReport = new ActionCommand(onCreateReport);
 
             updatingDateTimeTimer.Elapsed += (object source, ElapsedEventArgs e) =>
             {

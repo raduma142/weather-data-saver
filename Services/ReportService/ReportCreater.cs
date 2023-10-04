@@ -1,10 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WeatherDataSaver.Models;
 
 namespace WeatherDataSaver.Services.ReportService
@@ -14,7 +9,15 @@ namespace WeatherDataSaver.Services.ReportService
         private readonly ILogger<ReportCreater> _logger;
         public string CreateReport(ObservableCollection<DataRecord> dataSet)
         {
-            return "Report \n string";
+            string report = "Отчёт\n\n";
+
+            foreach(var record in dataSet)
+            {
+                report += $"{record.date} в {record.time}\n";
+                report += $"На улице {record.condition}, значние температуры равно {record.temperature}℃.\n{record.note}\n\n";
+            }
+
+            return report;
         }
         public ReportCreater(ILogger<ReportCreater> logger)
         {

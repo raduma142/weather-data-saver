@@ -1,24 +1,29 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using WeatherDataSaver.Services.ReportService;
+using WeatherDataSaver.ViewModels;
 
 namespace WeatherDataSaver
 {
     internal class Program
     {
-        public static IHost programHost { get; private set; }
+        public static IHost host { get; private set; }
         [STAThread]
         public static void Main()
         {
-            IHostBuilder hostApplicationBuilder = Host.CreateDefaultBuilder();
-            programHost = hostApplicationBuilder
+            var hostApplicationBuilder = Host.CreateDefaultBuilder();
+            host = hostApplicationBuilder
                 .ConfigureServices(services =>
                 {
                     services.AddSingleton<App>();
                     services.AddSingleton<MainWindow>();
+                    services.AddSingleton<MainWindowViewModel>();
+                    services.AddTransient<IReportCreater, ReportCreater>();
                     services.AddLogging();
                 }).Build();
-            App app = programHost.Services.GetService<App>();
+
+            var app = host.Services.GetService<App>();
             app.Run();
         }
     }

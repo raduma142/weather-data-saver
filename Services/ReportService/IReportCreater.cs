@@ -3,7 +3,7 @@ using WeatherDataSaver.Models;
 
 namespace WeatherDataSaver.Services.ReportService
 {
-    internal interface IReportCreater
+    public interface IReportCreater
     {
         string CreateReport(ObservableCollection<DataRecord> dataSet);
     }
