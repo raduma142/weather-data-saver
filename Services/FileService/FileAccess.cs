@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿/* Сервис для сохранения данных в файл */
+
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -12,6 +14,7 @@ namespace WeatherDataSaver.Services.FileService
     {
         private readonly ILogger<FileAccess> _logger;
 
+        //Сохранение данных в файл
         public string SaveDataSet(ObservableCollection<DataRecord> dataSet)
         {
             string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);

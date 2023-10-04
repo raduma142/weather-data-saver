@@ -1,9 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Timers;
-using System.Windows.Controls;
 using System.Windows.Input;
 using WeatherDataSaver.Infrascructure.Commands;
 using WeatherDataSaver.Models;
@@ -34,9 +31,14 @@ namespace WeatherDataSaver.ViewModels
         }
 
         //Condition Variants
-        public ObservableCollection<string> conditions { get; } = new ObservableCollection<string>()
+        public ObservableCollection<string[]> conditions { get; } = new ObservableCollection<string[]>()
         {
-            "Ясно", "Облачно", "Туман", "Дождь", "Снег", "Град"
+            new string[]{"☀", "Ясно"},
+            new string[]{"☁", "Облачно"},
+            new string[]{"🌫", "Туман"},
+            new string[]{"💧", "Дождь"},
+            new string[]{"❄", "Снег"},
+            new string[]{"🧊", "Град"},
         };
 
         //Selected Condition Index
@@ -47,7 +49,7 @@ namespace WeatherDataSaver.ViewModels
             get => _condition_index;
             set
             {
-                condition = conditions[value];
+                condition = conditions[value][1];
                 Set(ref _condition_index, value);
             }
         }

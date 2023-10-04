@@ -42,7 +42,16 @@
                     <TextBlock>Температура, ℃</TextBlock>
                     <TextBox Text="{Binding Path=temperature}"/>
                     <TextBlock>Условия</TextBlock>
-                    <ComboBox SelectedIndex="{Binding Path=condition_index}" ItemsSource="{Binding Path=conditions}"/>
+                    <ComboBox SelectedIndex="{Binding Path=condition_index}" ItemsSource="{Binding Path=conditions}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Left" Text="{Binding [0]}" Width="20"/>
+                                    <TextBlock Text="{Binding [1]}"/>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
 
                 <DockPanel DockPanel.Dock="Right" Width="150">
@@ -69,11 +78,11 @@
         <DataGrid Grid.Row="2" ItemsSource="{Binding Path=dataSet}" IsReadOnly="True"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
+                <DataGridTextColumn Header="Дата" Width="1*" Binding="{Binding Path=date}"/>
+                <DataGridTextColumn Header="Время" Width="1*" Binding="{Binding Path=time}"/>
                 <DataGridTextColumn Header="Температура, ℃" Width="1*" Binding="{Binding Path=temperature}"/>
                 <DataGridTextColumn Header="Условия" Width="1*" Binding="{Binding Path=condition}"/>
                 <DataGridTextColumn Header="Заметка" Width="2*" Binding="{Binding Path=note}"/>
-                <DataGridTextColumn Header="Дата" Width="1*" Binding="{Binding Path=date}"/>
-                <DataGridTextColumn Header="Время" Width="1*" Binding="{Binding Path=time}"/>
             </DataGrid.Columns>
         </DataGrid>
 
