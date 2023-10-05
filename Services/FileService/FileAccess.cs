@@ -1,4 +1,4 @@
-﻿/* Сервис для сохранения данных в файл */
+﻿/* Сервис для работы с файлами программы */
 
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,7 +15,7 @@ namespace WeatherDataSaver.Services.FileService
     {
         private readonly ILogger<FileAccess> _logger;
 
-        string docPath, dataPath, csvPath;
+        string docPath, dataPath, csvPath, databasePath;
 
         //Сохранение данных в файл
         public string SaveDataSet(ObservableCollection<DataRecord> dataSet)
@@ -49,9 +49,9 @@ namespace WeatherDataSaver.Services.FileService
         }
 
         //Открыть папку с файлами
-        public void OpenFilesFolder()
+        public void OpenFilesFolder(string path)
         {
-            Process.Start("explorer.exe", csvPath);
+            Process.Start("explorer.exe", dataPath + @$"\{path}");
         }
 
         public FileAccess(ILogger<FileAccess> logger)
@@ -59,6 +59,7 @@ namespace WeatherDataSaver.Services.FileService
             docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             dataPath = docPath + @"\WeatherData";
             csvPath = dataPath + @"\csv";
+            databasePath = dataPath + @"\database";
 
             //Проверка существования папки программы
             if (!Directory.Exists(dataPath))
@@ -70,6 +71,12 @@ namespace WeatherDataSaver.Services.FileService
             if (!Directory.Exists(csvPath))
             {
                 Directory.CreateDirectory(csvPath);
+            }
+
+            //Проверка существования папки с базой данных
+            if (!Directory.Exists(databasePath))
+            {
+                Directory.CreateDirectory(databasePath);
             }
 
             _logger = logger;

@@ -95,7 +95,7 @@
                 <DockPanel>
                     <Button DockPanel.Dock="Top" Command="{Binding Path=saveReportToFile}">💾 Сохранить</Button>
                     <TextBlock DockPanel.Dock="Top">Путь к файлу:</TextBlock>
-                    <Button DockPanel.Dock="Bottom" Command="{Binding openFilesFolder}">📂 Открыть в проводнике</Button>
+                    <Button DockPanel.Dock="Bottom" Command="{Binding openFilesFolder}" CommandParameter="csv">📂 Открыть в проводнике</Button>
                     <TextBox IsReadOnly="True" TextWrapping="WrapWithOverflow" Text="{Binding Path=csvPath}"
                              VerticalScrollBarVisibility="Auto"/>
                 </DockPanel>
@@ -105,7 +105,7 @@
                 <DockPanel>
                     <Button DockPanel.Dock="Top" Command="{Binding Path=saveReportToFile}">💾 Сохранить</Button>
                     <TextBlock DockPanel.Dock="Top">Путь к файлу:</TextBlock>
-                    <Button DockPanel.Dock="Bottom" Command="{Binding openFilesFolder}">📂 Открыть в проводнике</Button>
+                    <Button DockPanel.Dock="Bottom" Command="{Binding openFilesFolder}" CommandParameter="database">📂 Открыть в проводнике</Button>
                     <TextBox IsReadOnly="True" TextWrapping="WrapWithOverflow" Text="{Binding Path=csvPath}"
                              VerticalScrollBarVisibility="Auto"/>
                 </DockPanel>

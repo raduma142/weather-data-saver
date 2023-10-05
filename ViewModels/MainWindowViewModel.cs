@@ -139,7 +139,7 @@ namespace WeatherDataSaver.ViewModels
 
         //Сохранить отчёт в файл
         public ICommand saveReportToFile { get; }
-        private bool canSaveReportToFile(object o)
+        private bool canWorkWithReport(object o)
         {
             return dataSet.Count > 0;
         }
@@ -148,21 +148,30 @@ namespace WeatherDataSaver.ViewModels
             csvPath = fileAccess.SaveDataSet(dataSet);
         }
 
+        //Сохранить отчёт в базу данных
+        public ICommand saveReportToDataBase { get; }
+        private void onSaveReportToDataBase(object o)
+        {
+
+        }
+
         //Открыть папку с файлами
         public ICommand openFilesFolder { get; }
         private void onOpenFilesFolder(object o)
         {
-            fileAccess.OpenFilesFolder();
+            fileAccess.OpenFilesFolder((string) o);
         }
         #endregion
 
         public MainWindowViewModel()
         {
-            appendRecord = new ActionCommand(onAppendCommand);
-            createReport = new ActionCommand(onCreateReport);
-            saveReportToFile = new ActionCommand(onSaveReportToFile, canSaveReportToFile);
-            openFilesFolder = new ActionCommand(onOpenFilesFolder);
+            appendRecord =          new ActionCommand(onAppendCommand);
+            createReport =          new ActionCommand(onCreateReport, canWorkWithReport);
+            saveReportToFile =      new ActionCommand(onSaveReportToFile, canWorkWithReport);
+            saveReportToDataBase =  new ActionCommand(onSaveReportToDataBase, canWorkWithReport);
+            openFilesFolder =       new ActionCommand(onOpenFilesFolder);
 
+            //Автоматическое обновление времени
             updatingDateTimeTimer.Elapsed += (object source, ElapsedEventArgs e) =>
             {
                 date = DateTime.Now.ToString("d");

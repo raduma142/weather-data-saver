@@ -7,7 +7,7 @@ namespace WeatherDataSaver.Services.FileService
 {
     public interface IFileAccess
     {
-        void OpenFilesFolder();
+        void OpenFilesFolder(string path);
         string SaveDataSet(ObservableCollection<DataRecord> dataSet);
     }
 }
