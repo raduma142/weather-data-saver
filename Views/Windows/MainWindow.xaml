@@ -20,6 +20,12 @@
         <Style TargetType="Button">
             <Setter Property="Padding" Value="5"/>
         </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Padding" Value="5"/>
+        </Style>
         <Style TargetType="DockPanel">
             <Setter Property="Margin" Value="5"/>
         </Style>
@@ -38,8 +44,8 @@
         <!-- Область ввода данных -->
         <GroupBox Grid.Row="0" Header="Добавление записи">
             <DockPanel>
-
-                <StackPanel DockPanel.Dock="Left" Width="150">
+                
+                <StackPanel DockPanel.Dock="Left" Width="150" Margin="5">
                     <TextBlock>Температура, ℃</TextBlock>
                     <TextBox Text="{Binding Path=temperature}"/>
                     <TextBlock>Условия</TextBlock>
