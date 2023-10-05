@@ -128,7 +128,8 @@
         <!-- Варианты сохранения таблицы -->
         <DockPanel Grid.Row="4">
 
-            <GroupBox DockPanel.Dock="Left" Header="Сохранение в файл" Width="200">
+            <GroupBox DockPanel.Dock="Left" Header="Сохранение в файл" Width="200"
+                      Visibility="{Binding Path=saveToFileVisibility}">
                 <DockPanel>
                     <Button DockPanel.Dock="Top" Command="{Binding Path=saveReportToFile}"
                             ToolTip="Сохранить в файл (CTRL + S)">💾 Сохранить</Button>
@@ -139,7 +140,8 @@
                 </DockPanel>
             </GroupBox>
 
-            <GroupBox DockPanel.Dock="Right" Header="Сохранение в базу данных" Width="200">
+            <GroupBox DockPanel.Dock="Right" Header="Сохранение в базу данных" Width="200"
+                      Visibility="{Binding Path=saveToDatabaseVisibility}">
                 <DockPanel>
                     <Button DockPanel.Dock="Top" Command="{Binding Path=saveReportToDataBase}"
                             ToolTip="Сохранить в файл (CTRL + D)">💾 Сохранить</Button>
@@ -150,7 +152,7 @@
                 </DockPanel>
             </GroupBox>
 
-            <GroupBox Header="Отчёт">
+            <GroupBox Header="Отчёт" Visibility="{Binding Path=createReportVisibility}">
                 <DockPanel>
                     <Button DockPanel.Dock="Top" Command="{Binding Path=createReport}">📄 Сформировать</Button>
                     <TextBox IsReadOnly="True" Text="{Binding Path=report}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>

@@ -25,9 +25,9 @@ namespace WeatherDataSaver.Services.DataBaseService
             databasePath = dataPath + @"\database";
         }
         //Сохранить данные в базу данных
-        public string SaveDataSet(ObservableCollection<DataRecord> dataSet)
+        public string SaveDataSet(ObservableCollection<DataRecord> dataSet, string? databaseName = "database.db")
         {
-            databaseFilePath = databasePath + "\\database.db";
+            databaseFilePath = databasePath + $"\\{databaseName}";
             string connectionString = $"Data Source={databaseFilePath}";
 
             using (var connection = new SqliteConnection(connectionString))

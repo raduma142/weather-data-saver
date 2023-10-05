@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Timers;
+using System.Windows;
 using System.Windows.Input;
 using WeatherDataSaver.Infrascructure.Commands;
 using WeatherDataSaver.Models;
@@ -23,7 +24,7 @@ namespace WeatherDataSaver.ViewModels
         #region Properties
 
         //DataSet
-        public ObservableCollection<DataRecord> dataSet {  get; set; } = new ObservableCollection<DataRecord>();
+        public ObservableCollection<DataRecord> dataSet { get; set; } = new ObservableCollection<DataRecord>();
 
         //Selected DataSet Recorf
         private DataRecord _selectedRecord;
@@ -61,7 +62,7 @@ namespace WeatherDataSaver.ViewModels
         private int _condition_index = 0;
         public int condition_index
         {
-            
+
             get => _condition_index;
             set
             {
@@ -125,6 +126,30 @@ namespace WeatherDataSaver.ViewModels
             get => _databasePath;
             set => Set(ref _databasePath, value);
         }
+
+        //SaveToFile Visibility
+        private Visibility _saveToFileVisibility = Visibility.Visible;
+        public Visibility saveToFileVisibility
+        {
+            get => _saveToFileVisibility;
+            set => Set(ref _saveToFileVisibility, value);
+        }
+
+        //SaveToDatabase Visibility
+        private Visibility _saveToDatabaseVisibility = Visibility.Visible;
+        public Visibility saveToDatabaseVisibility
+        {
+            get => _saveToDatabaseVisibility;
+            set => Set(ref _saveToDatabaseVisibility, value);
+        }
+
+        //CreateReport Visibility
+        private Visibility _createReportVisibility = Visibility.Visible;
+        public Visibility createReportVisibility
+        {
+            get => _createReportVisibility;
+            set => Set(ref _createReportVisibility, value);
+        }
         #endregion
 
         #region Timer
@@ -158,7 +183,10 @@ namespace WeatherDataSaver.ViewModels
 
         private void onCreateReport(object o)
         {
-            report = reportCreater.CreateReport(dataSet);
+            if (ConfigurationManager.AppSettings.Get("CanCreateReport") == "yes")
+            {
+                report = reportCreater.CreateReport(dataSet);
+            }
         }
 
         //Сохранить отчёт в файл
@@ -169,14 +197,20 @@ namespace WeatherDataSaver.ViewModels
         }
         private void onSaveReportToFile(object o)
         {
-            csvPath = fileAccess.SaveDataSet(dataSet);
+            if (ConfigurationManager.AppSettings.Get("CanSaveToFile") == "yes")
+            {
+                csvPath = fileAccess.SaveDataSet(dataSet);
+            }
         }
 
         //Сохранить отчёт в базу данных
         public ICommand saveReportToDataBase { get; }
         private void onSaveReportToDataBase(object o)
         {
-            databasePath = dataBaseAccess.SaveDataSet(dataSet);
+            if (ConfigurationManager.AppSettings.Get("CanSaveToDataBase") == "yes")
+            {
+                databasePath = dataBaseAccess.SaveDataSet(dataSet, ConfigurationManager.AppSettings.Get("DataBaseName"));
+            }
         }
 
         //Открыть папку с файлами
@@ -214,6 +248,20 @@ namespace WeatherDataSaver.ViewModels
             deleteSelectedRecord =  new ActionCommand(onDeleteSelectedRecord, canDeleteSelectedRecord);
             deleteAllRecords =      new ActionCommand(onDeleteAllRecords);
             openFilesFolder =       new ActionCommand(onOpenFilesFolder);
+
+            //Применение файла конфигурации
+            if (ConfigurationManager.AppSettings.Get("CanSaveToFile") == "no")
+            {
+                saveToFileVisibility = Visibility.Collapsed;
+            }
+            if (ConfigurationManager.AppSettings.Get("CanCreateReport") == "no")
+            {
+                createReportVisibility = Visibility.Collapsed;
+            }
+            if (ConfigurationManager.AppSettings.Get("CanSaveToDataBase") == "no")
+            {
+                saveToDatabaseVisibility = Visibility.Collapsed;
+            }
 
             //Автоматическое обновление времени
             updatingDateTimeTimer.Elapsed += (object source, ElapsedEventArgs e) =>
