@@ -4,6 +4,7 @@ using System;
 using WeatherDataSaver.Services.ReportService;
 using WeatherDataSaver.ViewModels;
 using WeatherDataSaver.Services.FileService;
+using WeatherDataSaver.Services.DataBaseService;
 
 namespace WeatherDataSaver
 {
@@ -22,6 +23,7 @@ namespace WeatherDataSaver
                     services.AddSingleton<MainWindowViewModel>();
                     services.AddTransient<IFileAccess, FileAccess>();
                     services.AddTransient<IReportCreater, ReportCreater>();
+                    services.AddTransient<IDataBaseAccess, DataBaseAccess>();
                     services.AddLogging();
                 }).Build();
 

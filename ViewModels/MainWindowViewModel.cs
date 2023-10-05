@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Timers;
 using System.Windows.Input;
 using WeatherDataSaver.Infrascructure.Commands;
 using WeatherDataSaver.Models;
+using WeatherDataSaver.Services.DataBaseService;
 using WeatherDataSaver.Services.FileService;
 using WeatherDataSaver.Services.ReportService;
 using WeatherDataSaver.ViewModels.Base;
@@ -13,6 +15,7 @@ namespace WeatherDataSaver.ViewModels
     class MainWindowViewModel : ViewModel
     {
         #region Services
+        public IDataBaseAccess dataBaseAccess;
         public IReportCreater reportCreater;
         public IFileAccess fileAccess;
         #endregion
@@ -95,11 +98,19 @@ namespace WeatherDataSaver.ViewModels
         }
 
         //Saved File Path
-        private string _csvPath = "Отчёт ещё не сохранён.";
+        private string _csvPath = "Записи ещё не сохранены в файл.";
         public string csvPath
         {
             get => _csvPath;
             set => Set(ref _csvPath, value);
+        }
+
+        //Saved Database Path
+        private string _databasePath = "Записи ещё не сохранены в базу данных.";
+        public string databasePath
+        {
+            get => _databasePath;
+            set => Set(ref _databasePath, value);
         }
         #endregion
 
@@ -152,7 +163,7 @@ namespace WeatherDataSaver.ViewModels
         public ICommand saveReportToDataBase { get; }
         private void onSaveReportToDataBase(object o)
         {
-
+            databasePath = dataBaseAccess.SaveDataSet(dataSet, ConfigurationManager.AppSettings.Get("DataBaseName"));
         }
 
         //Открыть папку с файлами
