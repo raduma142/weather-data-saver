@@ -38,7 +38,12 @@ namespace WeatherDataSaver.ViewModels
         public float temperature
         {
             get => _temperature;
-            set => Set(ref _temperature, value);
+            set
+            {
+                if (value > 100) value = 100;
+                if (value < -100) value = 100;
+                Set(ref _temperature, value);
+            }
         }
 
         //Condition Variants

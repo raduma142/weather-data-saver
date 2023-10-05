@@ -12,8 +12,8 @@
         <vm:MainWindowViewModel/>
     </Window.DataContext>
     
-    <!-- Стили -->
     <Window.Resources>
+        <!-- Стили -->
         <Style TargetType="GroupBox">
             <Setter Property="Padding" Value="5"/>
         </Style>
@@ -29,6 +29,16 @@
         <Style TargetType="DockPanel">
             <Setter Property="Margin" Value="5"/>
         </Style>
+
+        <ControlTemplate x:Key="validationError">
+            <Border BorderBrush="Violet" BorderThickness="2">
+                <Grid>
+                    <AdornedElementPlaceholder/>
+                    <TextBlock HorizontalAlignment="Right" Margin="5, 0"
+                               Foreground="Red" FontSize="20" FontWeight="Bold">!</TextBlock>
+                </Grid>
+            </Border>
+        </ControlTemplate>
     </Window.Resources>
 
     <Grid>
@@ -47,7 +57,8 @@
                 
                 <StackPanel DockPanel.Dock="Left" Width="150" Margin="5">
                     <TextBlock>Температура, ℃</TextBlock>
-                    <TextBox Text="{Binding Path=temperature}"/>
+                    <TextBox Text="{Binding Path=temperature}" Validation.ErrorTemplate="{StaticResource ResourceKey=validationError}"/>
+
                     <TextBlock>Условия</TextBlock>
                     <ComboBox SelectedIndex="{Binding Path=condition_index}" ItemsSource="{Binding Path=conditions}">
                         <ComboBox.ItemTemplate>
