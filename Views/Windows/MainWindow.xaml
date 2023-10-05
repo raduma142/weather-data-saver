@@ -11,7 +11,8 @@
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
-
+    
+    <!-- Стили -->
     <Window.Resources>
         <Style TargetType="GroupBox">
             <Setter Property="Padding" Value="5"/>
@@ -75,8 +76,8 @@
         <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Height="5"/>
 
         <!-- Таблица добавленных записей -->
-        <DataGrid Grid.Row="2" ItemsSource="{Binding Path=dataSet}" IsReadOnly="True"
-                  AutoGenerateColumns="False">
+        <DataGrid Grid.Row="2" ItemsSource="{Binding Path=dataSet}" SelectedItem="{Binding Path=selectedRecord}"
+                  IsReadOnly="True" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Дата" Width="1*" Binding="{Binding Path=date}"/>
                 <DataGridTextColumn Header="Время" Width="1*" Binding="{Binding Path=time}"/>
@@ -84,6 +85,20 @@
                 <DataGridTextColumn Header="Условия" Width="1*" Binding="{Binding Path=condition}"/>
                 <DataGridTextColumn Header="Заметка" Width="2*" Binding="{Binding Path=note}"/>
             </DataGrid.Columns>
+
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Icon="🗑" Header="Удалить выделенную запись" InputGestureText="DELETE"
+                              Command="{Binding Path=deleteSelectedRecord}"/>
+                    <MenuItem Icon="🗑" Header="Удалить все записи" InputGestureText="SHIFT + DELETE"
+                              Command="{Binding Path=deleteAllRecords}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <DataGrid.InputBindings>
+                <KeyBinding Key="Delete" Command="{Binding deleteSelectedRecord}"/>
+                <KeyBinding Modifiers="Shift" Key="Delete" Command="{Binding deleteAllRecords}"/>
+            </DataGrid.InputBindings>
         </DataGrid>
 
         <GridSplitter Grid.Row="3" HorizontalAlignment="Stretch" Height="5"/>

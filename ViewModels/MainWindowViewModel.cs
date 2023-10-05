@@ -25,6 +25,14 @@ namespace WeatherDataSaver.ViewModels
         //DataSet
         public ObservableCollection<DataRecord> dataSet {  get; set; } = new ObservableCollection<DataRecord>();
 
+        //Selected DataSet Recorf
+        private DataRecord _selectedRecord;
+        public DataRecord selectedRecord
+        {
+            get => _selectedRecord;
+            set => Set(ref _selectedRecord, value);
+        }
+
         //Temperature
         private float _temperature = 0f;
         public float temperature
@@ -172,6 +180,24 @@ namespace WeatherDataSaver.ViewModels
         {
             fileAccess.OpenFilesFolder((string) o);
         }
+
+        //Удалить выделенную запись
+        public ICommand deleteSelectedRecord { get; }
+        private bool canDeleteSelectedRecord(object o)
+        {
+            return !(selectedRecord == null);
+        }
+        private void onDeleteSelectedRecord(object o)
+        {
+            dataSet.Remove(selectedRecord);
+        }
+
+        //Удалить все записи
+        public ICommand deleteAllRecords { get; }
+        private void onDeleteAllRecords(object o)
+        {
+            dataSet.Clear();
+        }
         #endregion
 
         public MainWindowViewModel()
@@ -180,6 +206,8 @@ namespace WeatherDataSaver.ViewModels
             createReport =          new ActionCommand(onCreateReport, canWorkWithReport);
             saveReportToFile =      new ActionCommand(onSaveReportToFile, canWorkWithReport);
             saveReportToDataBase =  new ActionCommand(onSaveReportToDataBase, canWorkWithReport);
+            deleteSelectedRecord =  new ActionCommand(onDeleteSelectedRecord, canDeleteSelectedRecord);
+            deleteAllRecords =      new ActionCommand(onDeleteAllRecords);
             openFilesFolder =       new ActionCommand(onOpenFilesFolder);
 
             //Автоматическое обновление времени
