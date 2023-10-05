@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,9 +13,12 @@ namespace WeatherDataSaver.Services.DataBaseService
 {
     public class DataBaseAccess : IDataBaseAccess
     {
+        ILogger<DataBaseAccess> _logger;
         string docPath, dataPath, databasePath, databaseFilePath;
-        public DataBaseAccess()
+        public DataBaseAccess(ILogger<DataBaseAccess> logger)
         {
+            _logger = logger;
+
             docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             dataPath = docPath + @"\WeatherData";
             databasePath = dataPath + @"\database";
@@ -25,8 +29,28 @@ namespace WeatherDataSaver.Services.DataBaseService
             databaseFilePath = databasePath + $"\\{databaseName}";
             string connectionString = $"Data Source={databaseFilePath}";
 
-            using (new SqliteConnection(connectionString))
+            using (var connection = new SqliteConnection(connectionString))
             {
+                connection.Open();
+                _logger.LogInformation("Подключено к базе данных");
+
+                //Создание таблицы (при отсутствии)
+                SqliteCommand commandCreate = connection.CreateCommand();
+                commandCreate.Connection = connection;
+                commandCreate.CommandText = "CREATE TABLE IF NOT EXISTS meteodata(date TEXT NOT NULL, time TEXT NOT NULL, temperature INTEGER NOT NULL, condition TEXT NOT NULL, note TEXT)";
+                commandCreate.ExecuteNonQuery();
+
+                _logger.LogInformation("Выполнен запрос создание таблицы (при отсутствии)");
+
+                //Добавление записей
+                SqliteCommand commandInsert = connection.CreateCommand();
+                commandInsert.Connection = connection;
+                foreach (var record in dataSet)
+                {
+                    commandInsert.CommandText = $"INSERT INTO meteodata(date, time, temperature, condition, note) VALUES ('{record.date}', '{record.time}', {record.temperature}, '{record.condition}', '{record.note}')";
+                    commandInsert.ExecuteNonQuery();
+                }
+                connection.Close();
             }
 
             return databaseFilePath;
