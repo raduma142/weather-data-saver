@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,9 +25,9 @@ namespace WeatherDataSaver.Services.DataBaseService
             databasePath = dataPath + @"\database";
         }
         //Сохранить данные в базу данных
-        public string SaveDataSet(ObservableCollection<DataRecord> dataSet, string? databaseName = "database.db")
+        public string SaveDataSet(ObservableCollection<DataRecord> dataSet)
         {
-            databaseFilePath = databasePath + $"\\{databaseName}";
+            databaseFilePath = databasePath + "\\database.db";
             string connectionString = $"Data Source={databaseFilePath}";
 
             using (var connection = new SqliteConnection(connectionString))
@@ -47,7 +48,7 @@ namespace WeatherDataSaver.Services.DataBaseService
                 commandInsert.Connection = connection;
                 foreach (var record in dataSet)
                 {
-                    commandInsert.CommandText = $"INSERT INTO meteodata(date, time, temperature, condition, note) VALUES ('{record.date}', '{record.time}', {record.temperature}, '{record.condition}', '{record.note}')";
+                    commandInsert.CommandText = $"INSERT INTO meteodata(date, time, temperature, condition, note) VALUES ('{record.date}', '{record.time}', {record.temperature.ToString(CultureInfo.InvariantCulture)}, '{record.condition}', '{record.note}')";
                     commandInsert.ExecuteNonQuery();
                 }
                 connection.Close();

@@ -13,7 +13,7 @@ namespace WeatherDataSaver.Services.ReportService
         //Создать отчёт
         public string CreateReport(ObservableCollection<DataRecord> dataSet)
         {
-            string report = "Отчёт\n\n";
+            string report = "Отчёт\n";
 
             foreach(var record in dataSet)
             {

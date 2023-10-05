@@ -15,7 +15,7 @@
         public string toReportSctring()
         {
             string line = string.Format("\n{0} в {1}\n", date, time);
-            line += string.Format("На улице {0}, значние температуры равно {1}℃.\n{2}\n", condition, temperature, note);
+            line += string.Format("На улице {0}, значение температуры равно {1}℃.\n{2}\n", condition, temperature, note);
             return line;
         }
     }

@@ -176,7 +176,7 @@ namespace WeatherDataSaver.ViewModels
         public ICommand saveReportToDataBase { get; }
         private void onSaveReportToDataBase(object o)
         {
-            databasePath = dataBaseAccess.SaveDataSet(dataSet, ConfigurationManager.AppSettings.Get("DataBaseName"));
+            databasePath = dataBaseAccess.SaveDataSet(dataSet);
         }
 
         //Открыть папку с файлами

@@ -11,6 +11,11 @@
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
+
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding Path=saveReportToFile}"/>
+        <KeyBinding Modifiers="Ctrl" Key="D" Command="{Binding Path=saveReportToDataBase}"/>
+    </Window.InputBindings>
     
     <Window.Resources>
         <!-- Стили -->
@@ -125,7 +130,8 @@
 
             <GroupBox DockPanel.Dock="Left" Header="Сохранение в файл" Width="200">
                 <DockPanel>
-                    <Button DockPanel.Dock="Top" Command="{Binding Path=saveReportToFile}">💾 Сохранить</Button>
+                    <Button DockPanel.Dock="Top" Command="{Binding Path=saveReportToFile}"
+                            ToolTip="Сохранить в файл (CTRL + S)">💾 Сохранить</Button>
                     <TextBlock DockPanel.Dock="Top">Путь к файлу:</TextBlock>
                     <Button DockPanel.Dock="Bottom" Command="{Binding openFilesFolder}" CommandParameter="csv">📂 Открыть в проводнике</Button>
                     <TextBox IsReadOnly="True" TextWrapping="WrapWithOverflow" Text="{Binding Path=csvPath}"
@@ -135,7 +141,8 @@
 
             <GroupBox DockPanel.Dock="Right" Header="Сохранение в базу данных" Width="200">
                 <DockPanel>
-                    <Button DockPanel.Dock="Top" Command="{Binding Path=saveReportToDataBase}">💾 Сохранить</Button>
+                    <Button DockPanel.Dock="Top" Command="{Binding Path=saveReportToDataBase}"
+                            ToolTip="Сохранить в файл (CTRL + D)">💾 Сохранить</Button>
                     <TextBlock DockPanel.Dock="Top">Путь к файлу:</TextBlock>
                     <Button DockPanel.Dock="Bottom" Command="{Binding openFilesFolder}" CommandParameter="database">📂 Открыть в проводнике</Button>
                     <TextBox IsReadOnly="True" TextWrapping="WrapWithOverflow" Text="{Binding Path=databasePath}"
