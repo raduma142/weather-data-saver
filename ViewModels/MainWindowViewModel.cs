@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Timers;
@@ -187,6 +188,8 @@ namespace WeatherDataSaver.ViewModels
                 time = time,
             };
 
+            Log.Information("Append Record To Data Table");
+
             dataSet.Add(record);
         }
 
@@ -255,6 +258,7 @@ namespace WeatherDataSaver.ViewModels
         }
         private void onDeleteSelectedRecord(object o)
         {
+            Log.Information("Delete Selected Record");
             dataSet.Remove(selectedRecord);
         }
 
@@ -262,6 +266,7 @@ namespace WeatherDataSaver.ViewModels
         public ICommand deleteAllRecords { get; }
         private void onDeleteAllRecords(object o)
         {
+            Log.Information("Delete All Records");
             dataSet.Clear();
         }
         #endregion
@@ -277,6 +282,8 @@ namespace WeatherDataSaver.ViewModels
             openFilesFolder =       new ActionCommand(onOpenFilesFolder);
 
             //Применение файла конфигурации
+            Log.Information("Read Program Configuration");
+
             if (ConfigurationManager.AppSettings.Get("CanSaveToFile") == "no")
             {
                 saveToFileVisibility = Visibility.Collapsed;
@@ -294,6 +301,8 @@ namespace WeatherDataSaver.ViewModels
             {
                 saveFilesPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 saveFilesPath += @"\WeatherData\files";
+
+                Log.Information("Use Default Files Path " + saveFilesPath);
             }
             else
             {
@@ -304,22 +313,26 @@ namespace WeatherDataSaver.ViewModels
             {
                 saveDatabasePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 saveDatabasePath += @"\WeatherData\database";
+
+                Log.Information("Use Default Database Path " + saveDatabasePath);
             }
             else
             {
                 saveDatabasePath = path;
             }
             string? name = ConfigurationManager.AppSettings.Get("DataBaseFileName");
-            if (name == null)
+            if ((name == null) || (name == "database.db"))
             {
                 dataBaseFileName = "database.db";
+
+                Log.Information("Use Default Database Name " + dataBaseFileName);
             }
             else
             {
                 dataBaseFileName = name;
             }
             string? format = ConfigurationManager.AppSettings.Get("FormatSaveFile");
-            if (name == null)
+            if ((format == null) || ((format != "xml") && (format != "csv") && (format != "xml")))
             {
                 formatSaveFile = "json";
             }
@@ -327,6 +340,8 @@ namespace WeatherDataSaver.ViewModels
             {
                 formatSaveFile = format;
             }
+            Log.Information("Use Format Save File " + formatSaveFile);
+
 
             //Автоматическое обновление времени
             updatingDateTimeTimer.Elapsed += (object source, ElapsedEventArgs e) =>

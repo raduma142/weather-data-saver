@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,11 +16,6 @@ namespace WeatherDataSaver.Services.DataBaseService
 {
     public class DataBaseAccess : IDataBaseAccess
     {
-        ILogger<DataBaseAccess> _logger;
-        public DataBaseAccess(ILogger<DataBaseAccess> logger)
-        {
-            _logger = logger;
-        }
         //Сохранить данные в базу данных
         public string SaveDataSet(ObservableCollection<DataRecord> dataSet, string path, string databaseName)
         {
@@ -30,7 +26,8 @@ namespace WeatherDataSaver.Services.DataBaseService
             using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
-                _logger.LogInformation("Подключено к базе данных");
+
+                Log.Information("Connect To Database " + databaseFilePath);
 
                 //Создание таблицы (при отсутствии)
                 SqliteCommand commandCreate = connection.CreateCommand();
@@ -38,7 +35,7 @@ namespace WeatherDataSaver.Services.DataBaseService
                 commandCreate.CommandText = "CREATE TABLE IF NOT EXISTS meteodata(date TEXT NOT NULL, time TEXT NOT NULL, temperature INTEGER NOT NULL, condition TEXT NOT NULL, note TEXT)";
                 commandCreate.ExecuteNonQuery();
 
-                _logger.LogInformation("Выполнен запрос создание таблицы (при отсутствии)");
+                Log.Information("Create Table mataodata (if not exists) In Database ");
 
                 //Добавление записей
                 SqliteCommand commandInsert = connection.CreateCommand();
@@ -48,8 +45,13 @@ namespace WeatherDataSaver.Services.DataBaseService
                     commandInsert.CommandText = $"INSERT INTO meteodata(date, time, temperature, condition, note) VALUES ('{record.date}', '{record.time}', {record.temperature.ToString(CultureInfo.InvariantCulture)}, '{record.condition}', '{record.note}')";
                     commandInsert.ExecuteNonQuery();
                 }
+
+                Log.Information("Sate Data To Database");
+
                 connection.Close();
             }
+
+            Log.Information("Close Connection To Database");
 
             return databaseFilePath;
         }
@@ -59,6 +61,8 @@ namespace WeatherDataSaver.Services.DataBaseService
         {
             if (!Directory.Exists(path))
             {
+                Log.Information("Create Database Directory" + path);
+
                 Directory.CreateDirectory(path);
             }
         }

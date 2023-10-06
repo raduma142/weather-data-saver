@@ -1,9 +1,8 @@
 ﻿/* Сервис для работы с файлами программы */
 
-using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -18,8 +17,6 @@ namespace WeatherDataSaver.Services.FileService
 {
     internal class FileAccess : IFileAccess
     {
-        private readonly ILogger<FileAccess> _logger;
-
         //Сохранение данных в файл в формате JSON
         public string SaveDataSetJSON(ObservableCollection<DataRecord> dataSet, string path)
         {
@@ -34,7 +31,7 @@ namespace WeatherDataSaver.Services.FileService
             string jsonString = JsonSerializer.Serialize(dataSet, options);
             File.WriteAllText(fileFullPath, jsonString);
 
-            _logger.LogInformation($"Сохранён отчёт {fileFullPath}");
+            Log.Information("Save a JSON File " + fileFullPath);
 
             return fileFullPath;
         }
@@ -87,7 +84,7 @@ namespace WeatherDataSaver.Services.FileService
 
             xmlDocument.Save(fileFullPath);
 
-            _logger.LogInformation($"Сохранён отчёт {fileFullPath}");
+            Log.Information("Save a XML File " + fileFullPath);
 
             return fileFullPath;
         }
@@ -111,7 +108,7 @@ namespace WeatherDataSaver.Services.FileService
                 }
             }
 
-            _logger.LogInformation($"Сохранён отчёт {fileFullPath}");
+            Log.Information("Save a CSV File " + fileFullPath);
 
             return fileFullPath;
         }
@@ -120,6 +117,9 @@ namespace WeatherDataSaver.Services.FileService
         public void OpenFilesFolder(string path)
         {
             CheckPathExists(path);
+
+            Log.Information("Open Path In Explorer " + path);
+
             Process.Start("explorer.exe", path);
         }
 
@@ -128,6 +128,8 @@ namespace WeatherDataSaver.Services.FileService
         {
             if (!Directory.Exists(path))
             {
+                Log.Information("Create Files Directory" + path);
+
                 Directory.CreateDirectory(path);
             }
         }
@@ -146,12 +148,9 @@ namespace WeatherDataSaver.Services.FileService
                 fileFullPath = Path.Combine(path, reportFileName);
             }
 
-            return fileFullPath;
-        }
+            Log.Information("Create File Name " + reportFileName);
 
-        public FileAccess(ILogger<FileAccess> logger)
-        {
-            _logger = logger;
+            return fileFullPath;
         }
     }
 }
