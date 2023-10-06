@@ -8,6 +8,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Unicode;
+using System.Xml;
 using WeatherDataSaver.Models;
 
 namespace WeatherDataSaver.Services.FileService
@@ -21,23 +25,71 @@ namespace WeatherDataSaver.Services.FileService
         {
             CheckPathExists(path);
             string name = string.Format("Отчёт от {0} (c {1} по {2})", DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss"), dataSet.First().date, dataSet.Last().date);
-            string reportPath = GenerateFileName(path, name, "json");
+            string fileFullPath = GenerateFileName(path, name, "json");
 
-            _logger.LogInformation($"Сохранён отчёт {reportPath}");
+            var options = new JsonSerializerOptions {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
+                WriteIndented = true
+            };
+            string jsonString = JsonSerializer.Serialize(dataSet, options);
+            File.WriteAllText(fileFullPath, jsonString);
 
-            return reportPath;
+            _logger.LogInformation($"Сохранён отчёт {fileFullPath}");
+
+            return fileFullPath;
         }
 
-        //Сохранение данных в файл в формате JSON
+        //Сохранение данных в файл в формате XML
         public string SaveDataSetXML(ObservableCollection<DataRecord> dataSet, string path)
         {
             CheckPathExists(path);
             string name = string.Format("Отчёт от {0} (c {1} по {2})", DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss"), dataSet.First().date, dataSet.Last().date);
-            string reportPath = GenerateFileName(path, name, "xml");
+            string fileFullPath = GenerateFileName(path, name, "xml");
 
-            _logger.LogInformation($"Сохранён отчёт {reportPath}");
+            XmlDocument xmlDocument = new XmlDocument();
 
-            return reportPath;
+            XmlDeclaration xmlDeclaration = xmlDocument.CreateXmlDeclaration("1.0", "utf-8", null);
+            xmlDocument.AppendChild(xmlDeclaration);
+
+            XmlElement elementDataSet = xmlDocument.CreateElement("meteodata");
+            xmlDocument.AppendChild(elementDataSet);
+
+            foreach (var record in dataSet)
+            {
+                XmlElement elementRecord = xmlDocument.CreateElement("record");
+
+                XmlElement elementDate = xmlDocument.CreateElement("date");
+                XmlElement elementTime = xmlDocument.CreateElement("time");
+                XmlElement elementTemperature = xmlDocument.CreateElement("temperature");
+                XmlElement elementCondition = xmlDocument.CreateElement("condition");
+                XmlElement elementNote = xmlDocument.CreateElement("note");
+                
+                XmlText textDate = xmlDocument.CreateTextNode(record.date);
+                XmlText textTime = xmlDocument.CreateTextNode(record.time);
+                XmlText textTemperature = xmlDocument.CreateTextNode(record.temperature.ToString());
+                XmlText textCondition = xmlDocument.CreateTextNode(record.condition);
+                XmlText textNote = xmlDocument.CreateTextNode(record.note);
+
+                elementDate.AppendChild(textDate);
+                elementTime.AppendChild(textTime);
+                elementTemperature.AppendChild(textTemperature);
+                elementCondition.AppendChild(textCondition);
+                elementNote.AppendChild(textNote);
+
+                elementRecord.AppendChild(elementDate);
+                elementRecord.AppendChild(elementTime);
+                elementRecord.AppendChild(elementTemperature);
+                elementRecord.AppendChild(elementCondition);
+                elementRecord.AppendChild(elementNote);
+
+                elementDataSet.AppendChild(elementRecord);
+            }
+
+            xmlDocument.Save(fileFullPath);
+
+            _logger.LogInformation($"Сохранён отчёт {fileFullPath}");
+
+            return fileFullPath;
         }
 
         //Сохранение данных в файл в формате CSV
@@ -46,10 +98,10 @@ namespace WeatherDataSaver.Services.FileService
             CheckPathExists(path);
 
             string name = string.Format("Отчёт от {0} (c {1} по {2})", DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss"), dataSet.First().date, dataSet.Last().date);
-            string reportPath = GenerateFileName(path, name, "csv");
+            string fileFullPath = GenerateFileName(path, name, "csv");
 
             //Сохранение отчёта
-            using (var file = new StreamWriter(reportPath, false, Encoding.Default))
+            using (var file = new StreamWriter(fileFullPath, false, Encoding.Default))
             {
                 file.WriteLine("date;time;temperature;condition;note");
                 foreach (var record in dataSet)
@@ -59,9 +111,9 @@ namespace WeatherDataSaver.Services.FileService
                 }
             }
 
-            _logger.LogInformation($"Сохранён отчёт {reportPath}");
+            _logger.LogInformation($"Сохранён отчёт {fileFullPath}");
 
-            return reportPath;
+            return fileFullPath;
         }
 
         //Открыть папку с файлами
@@ -84,17 +136,17 @@ namespace WeatherDataSaver.Services.FileService
         private string GenerateFileName(string path, string name, string format)
         {
             string reportFileName = name + "." + format;
-            string reportPath = Path.Combine(path, reportFileName);
+            string fileFullPath = Path.Combine(path, reportFileName);
 
             //Проверка существования отчёта с таким именем
-            while (File.Exists(reportPath))
+            while (File.Exists(fileFullPath))
             {
                 name += " (2)";
                 reportFileName = name + "." + format;
-                reportPath = Path.Combine(path, reportFileName);
+                fileFullPath = Path.Combine(path, reportFileName);
             }
 
-            return reportPath;
+            return fileFullPath;
         }
 
         public FileAccess(ILogger<FileAccess> logger)

@@ -318,6 +318,15 @@ namespace WeatherDataSaver.ViewModels
             {
                 dataBaseFileName = name;
             }
+            string? format = ConfigurationManager.AppSettings.Get("FormatSaveFile");
+            if (name == null)
+            {
+                formatSaveFile = "json";
+            }
+            else
+            {
+                formatSaveFile = format;
+            }
 
             //Автоматическое обновление времени
             updatingDateTimeTimer.Elapsed += (object source, ElapsedEventArgs e) =>
