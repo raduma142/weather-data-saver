@@ -5,6 +5,6 @@ namespace WeatherDataSaver.Services.DataBaseService
 {
     public interface IDataBaseAccess
     {
-        string SaveDataSet(ObservableCollection<DataRecord> dataSet, string? databaseName = "database.db");
+        string SaveDataSet(ObservableCollection<DataRecord> dataSet, string path, string databaseName);
     }
 }

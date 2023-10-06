@@ -233,7 +233,7 @@ namespace WeatherDataSaver.ViewModels
         {
             if (ConfigurationManager.AppSettings.Get("CanSaveToDataBase") == "yes")
             {
-                databasePath = dataBaseAccess.SaveDataSet(dataSet, ConfigurationManager.AppSettings.Get("DataBaseFileName"));
+                databasePath = dataBaseAccess.SaveDataSet(dataSet, saveDatabasePath, dataBaseFileName);
             }
         }
 

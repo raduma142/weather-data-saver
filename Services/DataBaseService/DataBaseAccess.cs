@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,19 +16,15 @@ namespace WeatherDataSaver.Services.DataBaseService
     public class DataBaseAccess : IDataBaseAccess
     {
         ILogger<DataBaseAccess> _logger;
-        string docPath, dataPath, databasePath, databaseFilePath;
         public DataBaseAccess(ILogger<DataBaseAccess> logger)
         {
             _logger = logger;
-
-            docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            dataPath = docPath + @"\WeatherData";
-            databasePath = dataPath + @"\database";
         }
         //Сохранить данные в базу данных
-        public string SaveDataSet(ObservableCollection<DataRecord> dataSet, string? databaseName = "database.db")
+        public string SaveDataSet(ObservableCollection<DataRecord> dataSet, string path, string databaseName)
         {
-            databaseFilePath = databasePath + $"\\{databaseName}";
+            CheckPathExists(path);
+            string databaseFilePath = path + $"\\{databaseName}";
             string connectionString = $"Data Source={databaseFilePath}";
 
             using (var connection = new SqliteConnection(connectionString))
@@ -55,6 +52,15 @@ namespace WeatherDataSaver.Services.DataBaseService
             }
 
             return databaseFilePath;
+        }
+
+        //Проверить существование папки
+        private void CheckPathExists(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
         }
     }
 }
