@@ -15,21 +15,34 @@ namespace WeatherDataSaver.Services.FileService
     {
         private readonly ILogger<FileAccess> _logger;
 
-        string docPath, dataPath, csvPath, databasePath;
-
-        //Сохранение данных в файл
-        public string SaveDataSet(ObservableCollection<DataRecord> dataSet)
+        //Сохранение данных в файл в формате JSON
+        public string SaveDataSetJSON(ObservableCollection<DataRecord> dataSet, string path)
         {
+            CheckPathExists(path);
+            return "";
+        }
+
+        //Сохранение данных в файл в формате JSON
+        public string SaveDataSetXML(ObservableCollection<DataRecord> dataSet, string path)
+        {
+            CheckPathExists(path);
+            return "";
+        }
+
+        //Сохранение данных в файл в формате CSV
+        public string SaveDataSetCSV(ObservableCollection<DataRecord> dataSet, string path)
+        {
+            CheckPathExists(path);
             string reportName = string.Format("Отчёт от {0} (c {1} по {2})", DateTime.Now.ToString("dd-MM-yyyy HH-mm-ss"), dataSet.First().date, dataSet.Last().date);
             string reportFileName = reportName + ".csv";
-            string reportPath = Path.Combine(csvPath, reportFileName);
+            string reportPath = Path.Combine(path, reportFileName);
 
             //Проверка существования отчёта с таким именем
             while (File.Exists(reportPath))
             {
                 reportName += " (2)";
                 reportFileName = reportName + ".csv";
-                reportPath = Path.Combine(csvPath, reportFileName);
+                reportPath = Path.Combine(path, reportFileName);
             }
 
             //Сохранение отчёта
@@ -51,34 +64,21 @@ namespace WeatherDataSaver.Services.FileService
         //Открыть папку с файлами
         public void OpenFilesFolder(string path)
         {
-            Process.Start("explorer.exe", dataPath + @$"\{path}");
+            CheckPathExists(path);
+            Process.Start("explorer.exe", path);
+        }
+
+        //Проверить существование папки
+        private void CheckPathExists(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
         }
 
         public FileAccess(ILogger<FileAccess> logger)
         {
-            docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            dataPath = docPath + @"\WeatherData";
-            csvPath = dataPath + @"\csv";
-            databasePath = dataPath + @"\database";
-
-            //Проверка существования папки программы
-            if (!Directory.Exists(dataPath))
-            {
-                Directory.CreateDirectory(dataPath);
-            }
-
-            //Проверка существования папки csv-отчётов
-            if (!Directory.Exists(csvPath))
-            {
-                Directory.CreateDirectory(csvPath);
-            }
-
-            //Проверка существования папки с базой данных
-            if (!Directory.Exists(databasePath))
-            {
-                Directory.CreateDirectory(databasePath);
-            }
-
             _logger = logger;
         }
     }

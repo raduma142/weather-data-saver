@@ -112,12 +112,24 @@ namespace WeatherDataSaver.ViewModels
         }
 
         //Saved File Path
-        private string _csvPath = "Записи ещё не сохранены в файл.";
-        public string csvPath
+        private string _filePath = "Записи ещё не сохранены в файл.";
+        public string filePath
         {
-            get => _csvPath;
-            set => Set(ref _csvPath, value);
+            get => _filePath;
+            set => Set(ref _filePath, value);
         }
+
+        //Save Files Directory Path
+        string saveFilesPath;
+
+        //Format Save File (JSON, XML, CSV)
+        string formatSaveFile;
+
+        //Save Database Directiory Path
+        string saveDatabasePath;
+
+        //Database File Name
+        string dataBaseFileName;
 
         //Saved Database Path
         private string _databasePath = "Записи ещё не сохранены в базу данных.";
@@ -199,7 +211,19 @@ namespace WeatherDataSaver.ViewModels
         {
             if (ConfigurationManager.AppSettings.Get("CanSaveToFile") == "yes")
             {
-                csvPath = fileAccess.SaveDataSet(dataSet);
+                if (formatSaveFile == "json")
+                {
+                    filePath = fileAccess.SaveDataSetJSON(dataSet, saveFilesPath);
+                }
+                else
+                if (formatSaveFile == "xml")
+                {
+                    filePath = fileAccess.SaveDataSetXML(dataSet, saveFilesPath);
+                }
+                else
+                {
+                    filePath = fileAccess.SaveDataSetCSV(dataSet, saveFilesPath);
+                }
             }
         }
 
@@ -209,7 +233,7 @@ namespace WeatherDataSaver.ViewModels
         {
             if (ConfigurationManager.AppSettings.Get("CanSaveToDataBase") == "yes")
             {
-                databasePath = dataBaseAccess.SaveDataSet(dataSet, ConfigurationManager.AppSettings.Get("DataBaseName"));
+                databasePath = dataBaseAccess.SaveDataSet(dataSet, ConfigurationManager.AppSettings.Get("DataBaseFileName"));
             }
         }
 
@@ -217,7 +241,10 @@ namespace WeatherDataSaver.ViewModels
         public ICommand openFilesFolder { get; }
         private void onOpenFilesFolder(object o)
         {
-            fileAccess.OpenFilesFolder((string) o);
+            if (((string) o) == "files")
+                fileAccess.OpenFilesFolder(saveFilesPath);
+            else
+                fileAccess.OpenFilesFolder(saveDatabasePath);
         }
 
         //Удалить выделенную запись
@@ -261,6 +288,35 @@ namespace WeatherDataSaver.ViewModels
             if (ConfigurationManager.AppSettings.Get("CanSaveToDataBase") == "no")
             {
                 saveToDatabaseVisibility = Visibility.Collapsed;
+            }
+            string? path = ConfigurationManager.AppSettings.Get("SaveFilesPath");
+            if ((path == null) || (path == ""))
+            {
+                saveFilesPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                saveFilesPath += @"\WeatherData\files";
+            }
+            else
+            {
+                saveFilesPath = path;
+            }
+            path = ConfigurationManager.AppSettings.Get("SaveDatabasePath");
+            if ((path == null) || (path == ""))
+            {
+                saveDatabasePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                saveDatabasePath += @"\WeatherData\database";
+            }
+            else
+            {
+                saveDatabasePath = path;
+            }
+            string? name = ConfigurationManager.AppSettings.Get("DataBaseFileName");
+            if (name == null)
+            {
+                dataBaseFileName = "database.db";
+            }
+            else
+            {
+                dataBaseFileName = name;
             }
 
             //Автоматическое обновление времени
