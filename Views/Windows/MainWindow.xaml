@@ -66,7 +66,8 @@
                 <!-- Температура и условия -->
                 <StackPanel DockPanel.Dock="Left" Width="150" Margin="5">
                     <TextBlock>Температура, ℃</TextBlock>
-                    <TextBox Text="{Binding Path=temperature}" Validation.ErrorTemplate="{StaticResource ResourceKey=validationError}"/>
+                    <TextBox Text="{Binding Path=temperature, UpdateSourceTrigger=PropertyChanged, Delay=1000}"
+                             Validation.ErrorTemplate="{StaticResource ResourceKey=validationError}"/>
 
                     <TextBlock>Условия</TextBlock>
                     <ComboBox SelectedIndex="{Binding Path=condition_index}" ItemsSource="{Binding Path=conditions}">
