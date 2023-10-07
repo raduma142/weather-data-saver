@@ -12,11 +12,12 @@
         <vm:MainWindowViewModel/>
     </Window.DataContext>
 
+    <!-- Комбинации клавиш -->
     <Window.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding Path=saveReportToFile}"/>
         <KeyBinding Modifiers="Ctrl" Key="D" Command="{Binding Path=saveReportToDataBase}"/>
     </Window.InputBindings>
-    
+
     <Window.Resources>
         <!-- Стили -->
         <Style TargetType="GroupBox">
@@ -36,6 +37,7 @@
             <Setter Property="Margin" Value="5"/>
         </Style>
 
+        <!-- Шаблон формы ошибки валидации -->
         <ControlTemplate x:Key="validationError">
             <Border BorderBrush="Violet" BorderThickness="2">
                 <Grid>
@@ -60,7 +62,8 @@
         <!-- Область ввода данных -->
         <GroupBox Grid.Row="0" Header="Добавление записи">
             <DockPanel>
-                
+
+                <!-- Температура и условия -->
                 <StackPanel DockPanel.Dock="Left" Width="150" Margin="5">
                     <TextBlock>Температура, ℃</TextBlock>
                     <TextBox Text="{Binding Path=temperature}" Validation.ErrorTemplate="{StaticResource ResourceKey=validationError}"/>
@@ -78,6 +81,7 @@
                     </ComboBox>
                 </StackPanel>
 
+                <!-- Дата и время -->
                 <DockPanel DockPanel.Dock="Right" Width="150">
                     <Button DockPanel.Dock="Bottom" Command="{Binding Path=appendRecord}">➕ Добавить</Button>
                     <StackPanel>
@@ -88,6 +92,7 @@
                     </StackPanel>
                 </DockPanel>
 
+                <!-- Заметка -->
                 <DockPanel Grid.Column="1">
                     <TextBlock DockPanel.Dock="Top">Заметка</TextBlock>
                     <TextBox AcceptsReturn="True" Text="{Binding Path=note}"/>
@@ -128,6 +133,8 @@
 
         <!-- Варианты сохранения таблицы -->
         <DockPanel Grid.Row="4">
+
+            <!-- Сохранить в файл -->
             <Grid DockPanel.Dock="Left" Width="200">
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
@@ -149,6 +156,7 @@
                 </GroupBox>
             </Grid>
 
+            <!-- Созранить в базу данных -->
             <Grid DockPanel.Dock="Right" Width="200">
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
@@ -170,6 +178,7 @@
                 </GroupBox>
             </Grid>
 
+            <!-- Формирование отчёта -->
             <Grid>
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
@@ -181,7 +190,7 @@
                 </TextBlock>
                 <GroupBox Header="Отчёт" Visibility="{Binding Path=createReportVisibility}">
                     <DockPanel>
-                        <Button DockPanel.Dock="Top" Command="{Binding Path=createReport}">📄 Сформировать</Button>
+                        <Button DockPanel.Dock="Top" Command="{Binding Path=createReport}">📄 Сформировать отчёт</Button>
                         <TextBox IsReadOnly="True" Text="{Binding Path=report}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
                     </DockPanel>
                 </GroupBox>
@@ -189,5 +198,5 @@
         </DockPanel>
 
     </Grid>
-        
+
 </Window>
