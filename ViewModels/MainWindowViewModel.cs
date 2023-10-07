@@ -166,7 +166,7 @@ namespace WeatherDataSaver.ViewModels
         #endregion
 
         #region Timer
-        public System.Timers.Timer updatingDateTimeTimer = new System.Timers.Timer()
+        public Timer updatingDateTimeTimer = new Timer()
         {
             Interval = 1000,
             AutoReset = true,
@@ -187,6 +187,10 @@ namespace WeatherDataSaver.ViewModels
                 date = date,
                 time = time,
             };
+
+            temperature = 0f;
+            condition_index = 0;
+            note = "";
 
             Log.Information("Append Record To Data Table");
 
@@ -288,14 +292,17 @@ namespace WeatherDataSaver.ViewModels
             {
                 saveToFileVisibility = Visibility.Collapsed;
             }
+
             if (ConfigurationManager.AppSettings.Get("CanCreateReport") == "no")
             {
                 createReportVisibility = Visibility.Collapsed;
             }
+
             if (ConfigurationManager.AppSettings.Get("CanSaveToDataBase") == "no")
             {
                 saveToDatabaseVisibility = Visibility.Collapsed;
             }
+
             string? path = ConfigurationManager.AppSettings.Get("SaveFilesPath");
             if ((path == null) || (path == ""))
             {
@@ -308,6 +315,7 @@ namespace WeatherDataSaver.ViewModels
             {
                 saveFilesPath = path;
             }
+
             path = ConfigurationManager.AppSettings.Get("SaveDatabasePath");
             if ((path == null) || (path == ""))
             {
@@ -320,6 +328,7 @@ namespace WeatherDataSaver.ViewModels
             {
                 saveDatabasePath = path;
             }
+
             string? name = ConfigurationManager.AppSettings.Get("DataBaseFileName");
             if ((name == null) || (name == "database.db"))
             {
@@ -331,6 +340,7 @@ namespace WeatherDataSaver.ViewModels
             {
                 dataBaseFileName = name;
             }
+
             string? format = ConfigurationManager.AppSettings.Get("FormatSaveFile");
             if ((format == null) || ((format != "xml") && (format != "csv") && (format != "xml")))
             {
@@ -340,8 +350,8 @@ namespace WeatherDataSaver.ViewModels
             {
                 formatSaveFile = format;
             }
-            Log.Information("Use Format Save File " + formatSaveFile);
 
+            Log.Information("Use Format Save File " + formatSaveFile);
 
             //Автоматическое обновление времени
             updatingDateTimeTimer.Elapsed += (object source, ElapsedEventArgs e) =>

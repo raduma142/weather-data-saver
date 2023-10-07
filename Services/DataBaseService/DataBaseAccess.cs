@@ -1,15 +1,10 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.Extensions.Logging;
+﻿/* Сервис работы с базой данных */
+
+using Microsoft.Data.Sqlite;
 using Serilog;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WeatherDataSaver.Models;
 
 namespace WeatherDataSaver.Services.DataBaseService

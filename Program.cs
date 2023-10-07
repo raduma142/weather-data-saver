@@ -6,7 +6,6 @@ using WeatherDataSaver.ViewModels;
 using WeatherDataSaver.Services.FileService;
 using WeatherDataSaver.Services.DataBaseService;
 using Serilog;
-using System.Data;
 using Serilog.Events;
 
 namespace WeatherDataSaver
